@@ -7,7 +7,6 @@ export const createClientSchema = z.object({
     val => (val === '' ? undefined : val),
     z
       .string()
-      .max(10)
       .email({
         message: 'Invalid email address',
       })

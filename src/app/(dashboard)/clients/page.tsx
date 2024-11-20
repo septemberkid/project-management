@@ -1,6 +1,7 @@
 'use client';
 import { useEffect } from 'react';
 import { useBreadcrumb } from '@/contexts/breadcrumb-context';
+import { useGetClients } from '@/features/clients/apis/use-get-clients';
 
 const ClientPage = () => {
   const { setBreadcrumbs } = useBreadcrumb();
@@ -16,9 +17,10 @@ const ClientPage = () => {
     ]);
   }, [setBreadcrumbs]);
 
+  const { data: clients } = useGetClients();
   return (
     <div className='w-full'>
-      <h1>Client</h1>
+      <h1>Clients: {JSON.stringify(clients)}</h1>
     </div>
   );
 };

@@ -5,6 +5,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { toast } from 'sonner';
 import {
   createClientSchema,
   CreateClientSchema,
@@ -18,9 +19,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import DottedSeparator from '@/components/dotted-separator';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useCreateClient } from '@/features/clients/apis/use-create-client';
 
 const CreateClientForm = () => {
   const router = useRouter();
+  const { isPending, mutate } = useCreateClient();
   const form = useForm<CreateClientSchema>({
     defaultValues: {
       name: '',
@@ -33,7 +36,15 @@ const CreateClientForm = () => {
     resolver: zodResolver(createClientSchema),
   });
   const onSubmit = (values: CreateClientSchema) => {
-    console.log(values);
+    mutate(values, {
+      onError: err => {
+        toast.error(err.message);
+      },
+      onSuccess: data => {
+        toast.error(data.message);
+        router.push('/clients');
+      },
+    });
   };
   return (
     <Card className={'rounded-xl shadow-none'}>
@@ -153,7 +164,7 @@ const CreateClientForm = () => {
             />
             <div className='flex items-center justify-end'>
               <Button
-                disabled={false}
+                disabled={isPending}
                 size='lg'
                 onClick={form.handleSubmit(onSubmit)}
               >
