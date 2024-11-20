@@ -8,7 +8,6 @@ export const useGetSession = () => {
     queryFn: async (): Promise<User> => {
       const res = await fetch(`${BASE_API}/auth/session`, {
         credentials: 'include',
-        cache: 'force-cache',
       });
       if (!res.ok) {
         throw new Error('Unable to get session');

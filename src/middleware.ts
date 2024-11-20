@@ -1,4 +1,4 @@
-import { getSession } from '@/queries';
+import { isAuthenticated } from '@/queries';
 import type { NextMiddleware } from 'next/server';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -9,7 +9,7 @@ const publicRoutes = ['/sign-in', '/sign-up'];
 
 export const middleware: NextMiddleware = async (req: NextRequest) => {
   const url = req.nextUrl.clone();
-  const session = await getSession();
+  const session = await isAuthenticated();
   if (publicRoutes.includes(url.pathname)) {
     if (session) {
       return NextResponse.redirect(new URL('/', req.url));
