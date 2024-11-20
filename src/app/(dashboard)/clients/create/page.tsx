@@ -22,8 +22,10 @@ const CreateClientPage = () => {
   }, [setBreadcrumbs]);
 
   return (
-    <div className='w-full lg:max-w-xl'>
-      <CreateClientForm />
+    <div className='flex flex-col items-center'>
+      <div className={'w-full lg:max-w-xl'}>
+        <CreateClientForm />
+      </div>
     </div>
   );
 };

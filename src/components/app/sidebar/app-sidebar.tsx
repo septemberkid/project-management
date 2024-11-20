@@ -1,8 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import { NavItem, User } from '@/types';
-import { Sidebar } from '@/components/ui/sidebar';
 import {
   Settings2,
   Package2,
@@ -13,21 +11,18 @@ import {
   Kanban,
   Calendar,
 } from 'lucide-react';
+import { NavItem } from '@/types';
+import { Sidebar } from '@/components/ui/sidebar';
 import AppSidebarFooter from '@/components/app/sidebar/app-sidebar-footer';
 import AppSidebarHeader from '@/components/app/sidebar/app-sidebar-header';
 import AppSidebarContent from '@/components/app/sidebar/app-sidebar-content';
 
 interface AppSidebarData {
-  readonly user: User;
   readonly navs: NavItem[];
   readonly appNavs: NavItem[];
 }
 const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
   const data: AppSidebarData = {
-    user: {
-      full_name: 'Jane Doe',
-      email: 'jane@acme.inc',
-    },
     navs: [
       {
         title: 'Home',
@@ -105,12 +100,11 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
       },
     ],
   };
-
   return (
     <Sidebar collapsible={'icon'} {...props}>
       <AppSidebarHeader />
       <AppSidebarContent navs={data.navs} appNavs={data.appNavs} />
-      <AppSidebarFooter user={data.user} />
+      <AppSidebarFooter />
     </Sidebar>
   );
 };

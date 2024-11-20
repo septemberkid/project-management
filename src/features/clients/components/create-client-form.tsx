@@ -36,13 +36,13 @@ const CreateClientForm = () => {
     console.log(values);
   };
   return (
-    <Card className={'rounded-md border-none shadow-none'}>
+    <Card className={'rounded-xl shadow-none'}>
       <CardHeader
         className={'flex flex-row items-center gap-x-4 space-y-0 p-7'}
       >
         <Button
           size={'sm'}
-          variant={'secondary'}
+          variant={'outline'}
           onClick={() => router.push('/clients')}
         >
           <ArrowLeftIcon className={'mr-2 size-4'} />

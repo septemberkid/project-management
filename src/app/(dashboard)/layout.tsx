@@ -25,9 +25,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
               <AppBreadcrumb />
             </div>
           </header>
-          <div className='flex flex-1 flex-col items-center gap-4 bg-neutral-100 p-4'>
-            {children}
-          </div>
+          <div className='h-full gap-4 bg-muted/50 p-4'>{children}</div>
         </SidebarInset>
       </BreadcrumbProvider>
     </SidebarProvider>

@@ -1,7 +1,8 @@
 import { LucideIcon } from 'lucide-react';
 
 export interface User {
-  readonly full_name: string;
+  readonly id: string;
+  readonly name: string;
   readonly email: string;
 }
 export interface BreadcrumbItem {
