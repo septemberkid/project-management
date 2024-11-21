@@ -22,6 +22,7 @@ import { useQueriesTable } from '@/components/data-table/use-queries-table';
 import ClientFilters, {
   useClientFilters,
 } from '@/features/clients/components/client-filters';
+import { useRouter } from 'next/navigation';
 
 const ServerSideTable = dynamic<ServerSideTableProps<Client>>(
   () => import('@/components/data-table/server-side-table'),
@@ -31,6 +32,7 @@ const ServerSideTable = dynamic<ServerSideTableProps<Client>>(
 );
 
 const ClientTable = () => {
+  const router = useRouter();
   const columns: ColumnDef<Client>[] = [
     {
       id: 'rowNumber',
@@ -113,10 +115,14 @@ const ClientTable = () => {
             <DropdownMenuContent align='end'>
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => router.push(`/clients/${client.id}?action=view`)}
+              >
                 <Eye className={'size-4'} /> Detail
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => router.push(`/clients/${client.id}?action=edit`)}
+              >
                 <Pencil className={'size-4'} /> Update
               </DropdownMenuItem>
               <DropdownMenuItem

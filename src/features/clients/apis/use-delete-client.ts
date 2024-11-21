@@ -17,7 +17,7 @@ export const useDeleteClient = () => {
       });
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to delete client.');
+        throw new Error(data.message || 'Failed to delete client');
       }
       return data satisfies DeleteClientResponse;
     },

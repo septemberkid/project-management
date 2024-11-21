@@ -1,14 +1,24 @@
 'use client';
 import { toast } from 'sonner';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ClientSchema } from '@/features/clients/schema';
 import { useBreadcrumb } from '@/contexts/breadcrumb-context';
 import ClientForm from '@/features/clients/components/client-form';
-import { useCreateClient } from '@/features/clients/apis/use-create-client';
+import { useUpdateClient } from '@/features/clients/apis/use-update-client';
+import { useRetrieveClient } from '@/features/clients/apis/use-retrieve-client';
 
-const CreateClientPage = () => {
-  const router = useRouter();
+interface SingleClientPage {
+  params: Promise<{
+    clientId: string;
+  }>;
+  searchParams: Promise<{
+    action: string;
+  }>;
+}
+const SingleClientPage = ({ params, searchParams }: SingleClientPage) => {
+  const { clientId } = React.use(params);
+  const { action } = React.use(searchParams);
   const { setBreadcrumbs } = useBreadcrumb();
   useEffect(() => {
     setBreadcrumbs([
@@ -21,18 +31,26 @@ const CreateClientPage = () => {
         url: '/clients',
       },
       {
-        title: 'Create Client',
+        title: 'Client',
       },
     ]);
   }, [setBreadcrumbs]);
-  const { isPending, mutate } = useCreateClient();
+  const router = useRouter();
+  const { data, error } = useRetrieveClient(clientId);
+  const { isPending, mutate } = useUpdateClient(clientId);
+  if (error) {
+    throw error;
+  }
+  if (!data) {
+    return null;
+  }
   const initialValues: ClientSchema = {
-    name: '',
-    address: '',
-    email: '',
-    website: '',
-    phone: '',
-    fax: '',
+    name: data.name,
+    address: data.address ?? '',
+    email: data.email ?? '',
+    website: data.website ?? '',
+    phone: data.phone_number ?? '',
+    fax: data.fax_number ?? '',
   };
   const onSubmit = (values: ClientSchema) => {
     mutate(values, {
@@ -50,13 +68,13 @@ const CreateClientPage = () => {
     <div className='flex flex-col items-center'>
       <div className={'w-full lg:max-w-xl'}>
         <ClientForm
-          action={'create'}
-          isLoading={isPending}
-          onSubmit={onSubmit}
           initialValues={initialValues}
+          isLoading={isPending}
+          action={action || 'view'}
+          onSubmit={onSubmit}
         />
       </div>
     </div>
   );
 };
-export default CreateClientPage;
+export default SingleClientPage;

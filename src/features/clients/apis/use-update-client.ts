@@ -3,17 +3,17 @@ import { Client } from '@/features/clients/types';
 import { ClientSchema } from '@/features/clients/schema';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-interface CreateClientResponse {
+interface UpdateClientResponse {
   readonly message: string;
   readonly client?: Client;
 }
-export const useCreateClient = () => {
+export const useUpdateClient = (clientId: string) => {
   const queryClient = useQueryClient();
-  return useMutation<CreateClientResponse, Error, ClientSchema>({
-    mutationKey: ['create-client'],
+  return useMutation<UpdateClientResponse, Error, ClientSchema>({
+    mutationKey: ['update-client', clientId],
     mutationFn: async payload => {
-      const response = await fetch(`${BASE_API}/clients`, {
-        method: 'POST',
+      const response = await fetch(`${BASE_API}/clients/${clientId}`, {
+        method: 'PATCH',
         credentials: 'include',
         body: JSON.stringify(payload),
         headers: {
@@ -22,9 +22,9 @@ export const useCreateClient = () => {
       });
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to create client');
+        throw new Error(data.message || 'Failed to update client');
       }
-      return data satisfies CreateClientResponse;
+      return data satisfies UpdateClientResponse;
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({

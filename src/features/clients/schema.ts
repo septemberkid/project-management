@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const createClientSchema = z.object({
+export const clientSchema = z.object({
   name: z.string().trim().min(1, 'Name is required').max(100),
   address: z.string().max(255).optional(),
   email: z.preprocess(
@@ -17,4 +17,4 @@ export const createClientSchema = z.object({
   fax: z.string().max(20).optional(),
 });
 
-export type CreateClientSchema = z.infer<typeof createClientSchema>;
+export type ClientSchema = z.infer<typeof clientSchema>;

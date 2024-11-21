@@ -1,3 +1,4 @@
+'use client';
 import {
   Form,
   FormField,
@@ -5,47 +6,37 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { toast } from 'sonner';
-import {
-  createClientSchema,
-  CreateClientSchema,
-} from '@/features/clients/schema';
+import { cn } from '@/libs/utils';
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { ArrowLeftIcon } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Textarea } from '@/components/ui/textarea';
 import DottedSeparator from '@/components/dotted-separator';
+import { clientSchema, ClientSchema } from '@/features/clients/schema';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useCreateClient } from '@/features/clients/apis/use-create-client';
 
-const CreateClientForm = () => {
-  const router = useRouter();
-  const { isPending, mutate } = useCreateClient();
-  const form = useForm<CreateClientSchema>({
+interface ClientFormProps {
+  readonly initialValues: ClientSchema;
+  readonly action: 'edit' | 'create' | 'view' | string;
+  readonly onSubmit?: (values: ClientSchema) => void;
+  readonly isLoading?: boolean;
+}
+const ClientForm = ({
+  initialValues,
+  action,
+  isLoading = false,
+  onSubmit,
+}: ClientFormProps) => {
+  const form = useForm<ClientSchema>({
     defaultValues: {
-      name: '',
-      address: '',
-      email: '',
-      website: '',
-      phone: '',
-      fax: '',
+      ...initialValues,
     },
-    resolver: zodResolver(createClientSchema),
+    resolver: zodResolver(clientSchema),
   });
-  const onSubmit = (values: CreateClientSchema) => {
-    mutate(values, {
-      onError: err => {
-        toast.error(err.message);
-      },
-      onSuccess: data => {
-        toast.error(data.message);
-        router.push('/clients');
-      },
-    });
-  };
+
   return (
     <Card className={'rounded-xl shadow-none'}>
       <CardHeader
@@ -54,13 +45,17 @@ const CreateClientForm = () => {
         <Button
           size={'sm'}
           variant={'outline'}
-          onClick={() => router.push('/clients')}
+          onClick={() => redirect('/clients')}
         >
           <ArrowLeftIcon className={'mr-2 size-4'} />
           Back
         </Button>
         <CardTitle className={'text-xl font-bold'}>
-          Create a new client
+          {action == 'create'
+            ? 'Create a new client'
+            : action == 'view'
+              ? 'View client'
+              : 'Update client'}
         </CardTitle>
       </CardHeader>
       <DottedSeparator className={'px-7 pb-4'} />
@@ -75,6 +70,7 @@ const CreateClientForm = () => {
                   <FormLabel>Name</FormLabel>
                   <Input
                     {...field}
+                    disabled={isLoading || action == 'view'}
                     type={'text'}
                     placeholder={'Name'}
                     autoComplete={'off'}
@@ -91,6 +87,7 @@ const CreateClientForm = () => {
                   <FormLabel>Address</FormLabel>
                   <Textarea
                     {...field}
+                    disabled={isLoading || action == 'view'}
                     placeholder={'Address'}
                     autoComplete={'off'}
                   />
@@ -106,6 +103,7 @@ const CreateClientForm = () => {
                   <FormLabel>Email</FormLabel>
                   <Input
                     {...field}
+                    disabled={isLoading || action == 'view'}
                     type={'email'}
                     placeholder={'Email'}
                     autoComplete={'off'}
@@ -122,6 +120,7 @@ const CreateClientForm = () => {
                   <FormLabel>Website</FormLabel>
                   <Input
                     {...field}
+                    disabled={isLoading || action == 'view'}
                     type={'text'}
                     placeholder={'Website'}
                     autoComplete={'off'}
@@ -135,11 +134,12 @@ const CreateClientForm = () => {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
+                  <FormLabel>Phone</FormLabel>
                   <Input
                     {...field}
+                    disabled={isLoading || action == 'view'}
                     type={'text'}
-                    placeholder={'Phone Number'}
+                    placeholder={'Phone'}
                     autoComplete={'off'}
                   />
                   <FormMessage />
@@ -151,11 +151,12 @@ const CreateClientForm = () => {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Fax Number</FormLabel>
+                  <FormLabel>Fax</FormLabel>
                   <Input
                     {...field}
+                    disabled={isLoading || action == 'view'}
                     type={'text'}
-                    placeholder={'Fax Number'}
+                    placeholder={'Fax'}
                     autoComplete={'off'}
                   />
                   <FormMessage />
@@ -164,9 +165,10 @@ const CreateClientForm = () => {
             />
             <div className='flex items-center justify-end'>
               <Button
-                disabled={isPending}
+                className={cn(action === 'view' && 'invisible')}
+                disabled={isLoading}
                 size='lg'
-                onClick={form.handleSubmit(onSubmit)}
+                onClick={onSubmit ? form.handleSubmit(onSubmit) : () => {}}
               >
                 Save changes
               </Button>
@@ -177,4 +179,4 @@ const CreateClientForm = () => {
     </Card>
   );
 };
-export default CreateClientForm;
+export default ClientForm;

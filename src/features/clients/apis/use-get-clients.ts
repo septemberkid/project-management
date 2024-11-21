@@ -36,7 +36,7 @@ export const useGetClients = (
         credentials: 'include',
       });
       if (!res.ok) {
-        throw new Error('Unable to get clients');
+        throw new Error('Failed to get clients');
       }
       const data = await res.json();
       return data satisfies GetClientsResult;
