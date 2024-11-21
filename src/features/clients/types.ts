@@ -9,3 +9,5 @@ export interface Client {
   readonly created_at: Date;
   readonly modified_at: Date | null;
 }
+
+export type ClientAsOption = Pick<Client, 'id' | 'name'>;

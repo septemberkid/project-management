@@ -1,6 +1,7 @@
 'use client';
 import { useEffect } from 'react';
 import { useBreadcrumb } from '@/contexts/breadcrumb-context';
+import ProjectTable from '@/features/projects/components/project-table';
 
 const ProjectPage = () => {
   const { setBreadcrumbs } = useBreadcrumb();
@@ -16,10 +17,6 @@ const ProjectPage = () => {
     ]);
   }, [setBreadcrumbs]);
 
-  return (
-    <div className='min-h-[100vh] flex-1 md:min-h-min'>
-      <h1>Project</h1>
-    </div>
-  );
+  return <ProjectTable />;
 };
 export default ProjectPage;

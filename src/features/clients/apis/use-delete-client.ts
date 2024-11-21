@@ -9,7 +9,7 @@ interface DeleteClientResponse {
 export const useDeleteClient = () => {
   const queryClient = useQueryClient();
   return useMutation<DeleteClientResponse, Error, { id: string }>({
-    mutationKey: ['create-client'],
+    mutationKey: ['delete-client'],
     mutationFn: async ({ id }) => {
       const response = await fetch(`${BASE_API}/clients/${id}`, {
         method: 'DELETE',

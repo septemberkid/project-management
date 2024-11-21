@@ -17,6 +17,7 @@ interface DatePickerProps {
   className?: HTMLAttributes<string>['className'];
   placeholder?: string;
   onClear?: () => void;
+  disabled?: boolean;
 }
 const DatePicker = ({
   value,
@@ -24,12 +25,14 @@ const DatePicker = ({
   onClear,
   placeholder,
   className,
+  disabled,
 }: DatePickerProps) => {
   return (
     <Popover>
       <PopoverTrigger asChild className={'h-9'}>
         <Button
           variant={'outline'}
+          disabled={disabled}
           size={'lg'}
           className={cn(
             'w-full justify-start px-3 text-left font-normal',

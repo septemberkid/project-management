@@ -14,6 +14,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { cn } from '@/libs/utils';
+import { HTMLAttributes } from 'react';
 import { Button } from '@/components/ui/button';
 import { Check, ChevronsUpDown } from 'lucide-react';
 
@@ -27,6 +28,7 @@ interface ComboBoxProps {
   placeholder?: string;
   options: Option[];
   noOptionFoundMessage?: string;
+  className?: HTMLAttributes<string>['className'];
 }
 const ComboBox = ({
   value,
@@ -34,6 +36,7 @@ const ComboBox = ({
   placeholder,
   options,
   noOptionFoundMessage = 'No option found.',
+  className,
 }: ComboBoxProps) => {
   const [open, setOpen] = React.useState(false);
 
@@ -47,6 +50,7 @@ const ComboBox = ({
           className={cn(
             'w-full justify-between',
             !value && 'text-muted-foreground',
+            className,
           )}
         >
           {value ? options.find(o => o.value === value)?.label : placeholder}

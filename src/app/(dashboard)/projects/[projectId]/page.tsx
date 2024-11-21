@@ -1,14 +1,28 @@
 'use client';
 import { toast } from 'sonner';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { parseDate } from '@/libs/utils';
 import { useRouter } from 'next/navigation';
 import { ProjectSchema } from '@/features/projects/schema';
 import { useBreadcrumb } from '@/contexts/breadcrumb-context';
-import { useCreateProject } from '@/features/projects/apis/use-create-project';
 import ProjectForm from '@/features/projects/components/project-form';
+import { useUpdateProject } from '@/features/projects/apis/use-update-project';
+import { useRetrieveProject } from '@/features/projects/apis/use-retrieve-project';
 
-const CreateProjectPage = () => {
-  const router = useRouter();
+interface SingleProjectPageProps {
+  params: Promise<{
+    projectId: string;
+  }>;
+  searchParams: Promise<{
+    action: string;
+  }>;
+}
+const SingleProjectPage = ({
+  params,
+  searchParams,
+}: SingleProjectPageProps) => {
+  const { projectId } = React.use(params);
+  const { action } = React.use(searchParams);
   const { setBreadcrumbs } = useBreadcrumb();
   useEffect(() => {
     setBreadcrumbs([
@@ -21,18 +35,25 @@ const CreateProjectPage = () => {
         url: '/projects',
       },
       {
-        title: 'Create Project',
+        title: 'Project',
       },
     ]);
   }, [setBreadcrumbs]);
-
-  const { isPending, mutate } = useCreateProject();
+  const router = useRouter();
+  const { data, error } = useRetrieveProject(projectId);
+  const { isPending, mutate } = useUpdateProject(projectId);
+  if (error) {
+    throw error;
+  }
+  if (!data) {
+    return null;
+  }
   const initialValues: ProjectSchema = {
-    name: '',
-    description: '',
-    start_date: undefined,
-    end_date: undefined,
-    client_id: '',
+    name: data.name,
+    description: data.description ?? '',
+    start_date: parseDate(data.start_date),
+    end_date: parseDate(data.end_date),
+    client_id: data.client_id,
   };
   const onSubmit = (values: ProjectSchema) => {
     mutate(values, {
@@ -45,12 +66,11 @@ const CreateProjectPage = () => {
       },
     });
   };
-
   return (
     <div className='flex flex-col items-center'>
       <div className={'w-full lg:max-w-xl'}>
         <ProjectForm
-          action={'create'}
+          action={action}
           isLoading={isPending}
           onSubmit={onSubmit}
           initialValues={initialValues}
@@ -59,4 +79,5 @@ const CreateProjectPage = () => {
     </div>
   );
 };
-export default CreateProjectPage;
+
+export default SingleProjectPage;

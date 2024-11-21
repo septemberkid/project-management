@@ -8,7 +8,7 @@ import ClientForm from '@/features/clients/components/client-form';
 import { useUpdateClient } from '@/features/clients/apis/use-update-client';
 import { useRetrieveClient } from '@/features/clients/apis/use-retrieve-client';
 
-interface SingleClientPage {
+interface SingleClientPageProps {
   params: Promise<{
     clientId: string;
   }>;
@@ -16,7 +16,7 @@ interface SingleClientPage {
     action: string;
   }>;
 }
-const SingleClientPage = ({ params, searchParams }: SingleClientPage) => {
+const SingleClientPage = ({ params, searchParams }: SingleClientPageProps) => {
   const { clientId } = React.use(params);
   const { action } = React.use(searchParams);
   const { setBreadcrumbs } = useBreadcrumb();

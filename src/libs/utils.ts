@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { SortingState } from '@tanstack/table-core';
+import { isValid } from 'date-fns';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -44,3 +45,10 @@ export function buildQueryParams(
   });
   return new URLSearchParams(tmp).toString();
 }
+
+export const parseDate = (date: string | Date | null) => {
+  if (date == null) {
+    return undefined;
+  }
+  return isValid(new Date(date)) ? new Date(date) : undefined;
+};

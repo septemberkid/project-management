@@ -1,9 +1,14 @@
 import { z } from 'zod';
 
-export const createProjectSchema = z.object({
+export const projectSchema = z.object({
   name: z.string().trim().min(1, 'Name is required').max(100),
+  description: z.string().max(150).optional(),
   start_date: z.coerce.date().optional(),
   end_date: z.coerce.date().optional(),
-  client_id: z.string().trim().min(1, 'Client is required'),
+  client_id: z
+    .string({
+      required_error: 'Client is required',
+    })
+    .trim(),
 });
-export type CreateProjectSchema = z.infer<typeof createProjectSchema>;
+export type ProjectSchema = z.infer<typeof projectSchema>;
