@@ -22,7 +22,7 @@ export const useCreateClient = () => {
       });
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.message || 'Sign in failed.');
+        throw new Error(data.message || 'Failed to create client.');
       }
       return data satisfies CreateClientResponse;
     },

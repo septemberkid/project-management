@@ -1,8 +1,7 @@
 'use client';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useBreadcrumb } from '@/contexts/breadcrumb-context';
-import { useGetClients } from '@/features/clients/apis/use-get-clients';
-
+import ClientTable from '@/features/clients/components/client-table';
 const ClientPage = () => {
   const { setBreadcrumbs } = useBreadcrumb();
   useEffect(() => {
@@ -17,11 +16,6 @@ const ClientPage = () => {
     ]);
   }, [setBreadcrumbs]);
 
-  const { data: clients } = useGetClients();
-  return (
-    <div className='w-full'>
-      <h1>Clients: {JSON.stringify(clients)}</h1>
-    </div>
-  );
+  return <ClientTable />;
 };
 export default ClientPage;

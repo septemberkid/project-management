@@ -3,6 +3,7 @@ import React from 'react';
 import { Toaster } from 'sonner';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { NuqsAdapter } from 'nuqs/adapters/react';
 import QueryProvider from '@/libs/query-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -22,10 +23,15 @@ export default function RootLayout({
     <html lang='en'>
       <body className={`${interFont.className} antialiased`}>
         <Toaster />
-        <QueryProvider>
-          <ReactQueryDevtools initialIsOpen={false} />
-          <TooltipProvider>{children}</TooltipProvider>
-        </QueryProvider>
+        <NuqsAdapter>
+          <QueryProvider>
+            <ReactQueryDevtools
+              initialIsOpen={false}
+              buttonPosition={'top-left'}
+            />
+            <TooltipProvider>{children}</TooltipProvider>
+          </QueryProvider>
+        </NuqsAdapter>
       </body>
     </html>
   );
