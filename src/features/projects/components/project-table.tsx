@@ -69,7 +69,7 @@ const ProjectTable = () => {
           : format(props.getValue() as string, 'dd MMM yyyy');
       },
       enableHiding: true,
-      enableSorting: false,
+      enableSorting: true,
     },
     {
       meta: {
@@ -84,7 +84,7 @@ const ProjectTable = () => {
           : format(props.getValue() as string, 'dd MMM yyyy');
       },
       enableHiding: true,
-      enableSorting: false,
+      enableSorting: true,
     },
     {
       meta: {
