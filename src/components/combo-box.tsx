@@ -28,6 +28,7 @@ interface ComboBoxProps {
   placeholder?: string;
   options: Option[];
   noOptionFoundMessage?: string;
+  disabled?: boolean;
   className?: HTMLAttributes<string>['className'];
 }
 const ComboBox = ({
@@ -37,6 +38,7 @@ const ComboBox = ({
   options,
   noOptionFoundMessage = 'No option found.',
   className,
+  disabled,
 }: ComboBoxProps) => {
   const [open, setOpen] = React.useState(false);
 
@@ -44,6 +46,7 @@ const ComboBox = ({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
+          disabled={disabled}
           variant={'outline'}
           role={'combobox'}
           aria-expanded={open}

@@ -1,6 +1,7 @@
 'use client';
 import { useEffect } from 'react';
 import { useBreadcrumb } from '@/contexts/breadcrumb-context';
+import MemberTable from '@/features/members/components/member-table';
 
 const MemberSettingsPage = () => {
   const { setBreadcrumbs } = useBreadcrumb();
@@ -20,10 +21,6 @@ const MemberSettingsPage = () => {
     ]);
   }, [setBreadcrumbs]);
 
-  return (
-    <div className='min-h-[100vh] flex-1 md:min-h-min'>
-      <h1>Member</h1>
-    </div>
-  );
+  return <MemberTable />;
 };
 export default MemberSettingsPage;

@@ -52,3 +52,10 @@ export const parseDate = (date: string | Date | null) => {
   }
   return isValid(new Date(date)) ? new Date(date) : undefined;
 };
+export const capitalize = (value: string) => {
+  return value
+    .toLowerCase()
+    .split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};
